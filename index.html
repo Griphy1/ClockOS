@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClockOS | Professional Timer & Alarm</title>
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+
+    <style>
+        :root {
+            --sidebar-bg: #f0f7ff;
+            --active-blue: #0066ff;
+            --text-main: #1a202c;
+            --border: #e2e8f0;
+        }
+
+        body, html {
+            margin: 0; padding: 0; height: 100%; width: 100%;
+            font-family: 'Inter', sans-serif;
+            background: #ffffff; color: var(--text-main); overflow: hidden;
+        }
+
+        .app-container { display: flex; height: 100vh; width: 100vw; }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 260px; background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            display: flex; flex-direction: column; padding: 30px 0;
+            z-index: 100;
+        }
+
+        .logo { padding: 0 40px 30px; font-size: 1.8rem; font-weight: 800; color: var(--active-blue); }
+
+        .nav-item {
+            padding: 18px 40px; cursor: pointer; font-weight: 600;
+            transition: 0.2s; border-left: 5px solid transparent;
+        }
+
+        .nav-item:hover { background: #e1efff; }
+        .nav-item.active { background: #e1efff; color: var(--active-blue); border-left-color: var(--active-blue); }
+
+        /* Main Content area */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* AD SLOTS */
+        .ad-slot-top {
+            width: 100%;
+            height: 90px;
+            background: #fafafa;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ad-slot-bottom {
+            width: 100%;
+            height: 90px;
+            background: #fafafa;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .content-section { display: none; text-align: center; }
+        .content-section.active { display: block; }
+
+        .display-time {
+            font-size: clamp(4rem, 12vw, 8rem); 
+            font-weight: 700; color: var(--active-blue);
+            font-variant-numeric: tabular-nums; margin: 10px 0;
+        }
+
+        /* UI Controls */
+        .input-group { display: flex; gap: 10px; justify-content: center; }
+        input, select {
+            padding: 10px; font-size: 2rem; border: 2px solid var(--border);
+            border-radius: 12px; width: 100px; text-align: center; color: var(--active-blue);
+        }
+
+        .controls { margin-top: 30px; display: flex; gap: 15px; justify-content: center; }
+        button {
+            padding: 15px 35px; font-size: 1.1rem; border-radius: 50px;
+            cursor: pointer; font-weight: 700; border: none; transition: 0.3s;
+        }
+        .btn-start { background: var(--active-blue); color: white; }
+        .btn-reset { background: #edf2f7; color: #4a5568; }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="logo">ClockOS</div>
+            <div class="nav-item active" onclick="showSection(event, 'timer')">Timer</div>
+            <div class="nav-item" onclick="showSection(event, 'alarm')">Alarm</div>
+            <div class="nav-item" onclick="showSection(event, 'stopwatch')">Stopwatch</div>
+        </nav>
+
+        <div class="main-wrapper">
+            
+            <div class="ad-slot-top">
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width:728px;height:90px"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="1111111111"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+
+            <main class="main-content">
+                <section id="timer" class="content-section active">
+                    <div id="timer-inputs" class="input-group">
+                        <input type="number" id="th" value="0">
+                        <input type="number" id="tm" value="0">
+                        <input type="number" id="ts" value="0">
+                    </div>
+                    <div class="display-time" id="t-display" style="display:none">00:00:00</div>
+                    <div class="controls">
+                        <button class="btn-start" onclick="toggleTimer()" id="t-btn">Start</button>
+                        <button class="btn-reset" onclick="resetTimer()">Reset</button>
+                    </div>
+                </section>
+
+                <section id="alarm" class="content-section">
+                    <div class="input-group">
+                        <input type="number" id="ah" value="12">
+                        <input type="number" id="am" value="00">
+                        <select id="ampm"><option>AM</option><option>PM</option></select>
+                    </div>
+                    <div id="alarm-box" style="margin-top:20px;">No Alarm</div>
+                    <div class="controls"><button class="btn-start" onclick="setAlarm()">Set Alarm</button></div>
+                </section>
+
+                <section id="stopwatch" class="content-section">
+                    <div class="display-time" id="sw-display">00:00:00.00</div>
+                    <div class="controls"><button class="btn-start" onclick="toggleStopwatch()" id="sw-btn">Start</button></div>
+                </section>
+            </main>
+
+            <div class="ad-slot-bottom">
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width:728px;height:90px"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="2222222222"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Logic for Timer, Alarm, and Stopwatch remains the same as previous version
+        function showSection(e, id) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            e.currentTarget.classList.add('active');
+        }
+
+        // TIMER LOGIC
+        let tTime, tInterval, tRunning = false;
+        function toggleTimer() {
+            if(!tRunning) {
+                const h = parseInt(document.getElementById('th').value) || 0;
+                const m = parseInt(document.getElementById('tm').value) || 0;
+                const s = parseInt(document.getElementById('ts').value) || 0;
+                tTime = (h * 3600) + (m * 60) + s;
+                if(tTime <= 0) return;
+                document.getElementById('timer-inputs').style.display = 'none';
+                document.getElementById('t-display').style.display = 'block';
+                tInterval = setInterval(() => {
+                    tTime--;
+                    let hours = Math.floor(tTime / 3600);
+                    let minutes = Math.floor((tTime % 3600) / 60);
+                    let seconds = tTime % 60;
+                    document.getElementById('t-display').innerText = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+                    if(tTime <= 0) { clearInterval(tInterval); alert("Timer Finished!"); resetTimer(); }
+                }, 1000);
+            } else { clearInterval(tInterval); }
+            tRunning = !tRunning;
+        }
+        function resetTimer() { clearInterval(tInterval); tRunning = false; document.getElementById('timer-inputs').style.display = 'flex'; document.getElementById('t-display').style.display = 'none'; }
+    </script>
+</body>
+</html>
